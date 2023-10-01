@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private void Update()
+    private Rigidbody2D rb;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    void Update()
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
 
-        GetComponent<Rigidbody2D>().MovePosition(mousePos);
+        if (mousePos.x > 0) mousePos.x = 0;
+
+        rb.MovePosition(mousePos);
+
+
     }
 }
