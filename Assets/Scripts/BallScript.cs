@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class BallScript : MonoBehaviour
 {
     private Rigidbody2D rb;
     private TextMeshPro playerText;
     private TextMeshPro enemyText;
+    private AudioSource HitWallSound;
 
     // Start is called before the first frame update
     void Start()
@@ -15,6 +17,7 @@ public class BallScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         playerText = GameObject.Find("PlayerScoreText").GetComponent<TextMeshPro>();
         enemyText = GameObject.Find("EnemyScoreText").GetComponent<TextMeshPro>();
+        HitWallSound = GameObject.Find("HitWallSound").GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -27,8 +30,16 @@ public class BallScript : MonoBehaviour
         else if (collision.gameObject.name.Contains("PlayerGoal"))
         {
             Goal();
-
+            
             enemyText.text = (int.Parse(enemyText.text) + 1).ToString();
+        }
+        else if (collision.gameObject.name.Contains("Wall"))
+        {
+            HitWallSound.Play();
+        }
+        else
+        {
+            GetComponent<AudioSource>().Play();
         }
     }
 
