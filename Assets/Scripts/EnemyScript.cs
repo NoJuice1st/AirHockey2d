@@ -38,7 +38,7 @@ public class EnemyScript : MonoBehaviour
 
         if(puckInRange)
         {   // attack
-            targetPos = puck.transform.position;
+            targetPos = puck.transform.position + (defencePointOffset / 5f);
             speed = attackSpeed;
         }
         else
