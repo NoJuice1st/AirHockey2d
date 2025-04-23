@@ -14,18 +14,16 @@ public class GoalEffects : MonoBehaviour
         AS = GetComponent<AudioSource>();
     }
 
-
-
     private void OnCollisionEnter2D(Collision2D other) 
     {
-        if(other.gameObject.name.Contains("Ball"))
+        if(other.gameObject.name.Contains("Ball") && !pS.isPlaying)
         {
             pS.Play();
             AS.Play();
         }
     }
 
-    void Update() {
+    /*void Update() {
         if (pS.isPlaying)
         {
             waitTime -= Time.deltaTime;
@@ -35,5 +33,5 @@ public class GoalEffects : MonoBehaviour
                 waitTime = 0.5f;
             }
         }
-    }
+    }*/
 }

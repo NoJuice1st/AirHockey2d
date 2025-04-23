@@ -6,10 +6,11 @@ public class EnemyScript : MonoBehaviour
 {
     private GameObject puck;
     private Transform defencePoint;
-
+    
     private float speed;
-    private float defenceSpeed = 10;
-    private float attackSpeed = 20;
+    [SerializeField]private float defenceSpeed = 10;
+    [SerializeField]private float attackSpeed = 20;
+    private float dir;
 
     private Rigidbody2D rb;
     private Vector3 targetPos;
@@ -38,7 +39,18 @@ public class EnemyScript : MonoBehaviour
 
         if(puckInRange)
         {   // attack
-            targetPos = puck.transform.position + (defencePointOffset / 5f);
+            dir = Vector3.Cross(transform.forward, (transform.position - puck.transform.position).normalized).y;
+
+            if (dir > 0) // if puck on the left
+            {
+                targetPos = puck.transform.position + (defencePointOffset / 5f);
+                
+            }
+            else
+            {
+                targetPos = puck.transform.position + new Vector3(0, -1 + Random.Range(-1f,1f) / 5f, 0);
+                
+            }
             speed = attackSpeed;
         }
         else

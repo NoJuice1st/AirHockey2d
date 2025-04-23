@@ -5,11 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private float speed = 30;
+    [SerializeField]private float speed = 30;
 
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -19,8 +20,7 @@ public class Player : MonoBehaviour
         mousePos.z = 0;
 
         if (mousePos.x > 0) mousePos.x = 0;
-
-
+        
         Vector3 finalPosition = Vector3.MoveTowards(transform.position, mousePos, speed * Time.deltaTime);
         rb.MovePosition(finalPosition);
     }

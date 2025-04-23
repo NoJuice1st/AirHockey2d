@@ -1,36 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.Collections.Specialized;
+
 
 public class BallScript : MonoBehaviour
 {
     private Rigidbody2D rb;
     private TextMeshPro playerText;
     private TextMeshPro enemyText;
-    private AudioSource HitWallSound;
+    private AudioSource hitWallSound;
+    
     private bool shouldRespawn;
     private bool notify;
     private bool notifyWin;
+    
     private float notifyTimer;
     private float respawnTimer;
+
+    public Transform notificationPoint;
+    private Vector3 notificationOrigin;
+    
     private Vector3 respawnPosition;
     private TextMeshPro scoredText;
     private GameObject notification;
     private AudioSource hit;
-
-    // Start is called before the first frame update
+    
     void Start()
     {
-        //UnityEngine.Device.Application.targetFrameRate = 400;
         rb = GetComponent<Rigidbody2D>();
         playerText = GameObject.Find("PlayerScoreText").GetComponent<TextMeshPro>();
         enemyText = GameObject.Find("EnemyScoreText").GetComponent<TextMeshPro>();
-        HitWallSound = GameObject.Find("HitWallSound").GetComponent<AudioSource>();
+        hitWallSound = GameObject.Find("HitWallSound").GetComponent<AudioSource>();
         scoredText = GameObject.Find("WhoScoredText").GetComponent<TextMeshPro>();
         notification = GameObject.Find("WhoScoredText");
+        notificationOrigin = notification.transform.position;
         hit = GetComponent<AudioSource>();
     }
     void Update() {
@@ -60,15 +63,11 @@ public class BallScript : MonoBehaviour
 
             if(notifyTimer <= 0.5f)
             {
-                notification.transform.position += new Vector3(0, -5, 0) * Time.deltaTime;
+                notification.transform.position = Vector2.Lerp(notification.transform.position, notificationPoint.position, 5f * Time.deltaTime);
             }
-            else if(notifyTimer <= 1.5f && notifyTimer > 0.5f)
+            else if (notifyTimer is > 1.5f and < 2f)
             {
-                
-            }
-            else if(notifyTimer <= 2 && notifyTimer > 1.5f)
-            {
-                notification.transform.position += new Vector3(0, 5, 0) * Time.deltaTime;
+                notification.transform.position = Vector2.Lerp(notification.transform.position, notificationOrigin, 5f * Time.deltaTime);
             }
             else if(notifyTimer > 2)
             {
@@ -115,7 +114,7 @@ public class BallScript : MonoBehaviour
         }
         else if (collision.gameObject.name.Contains("Wall"))
         {
-            HitWallSound.Play();
+            hitWallSound.Play();
         }
         else
         {
@@ -123,12 +122,14 @@ public class BallScript : MonoBehaviour
         }
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     private void Goal(string goalName = "")
     {
         transform.position = new Vector3(0,9,0);
         rb.velocity = Vector2.zero;
         respawnPosition = Vector3.zero;
         notify = true;
+        
         if(goalName == "Player")
         {
             respawnPosition =- Vector3.right;
@@ -139,7 +140,7 @@ public class BallScript : MonoBehaviour
         {
             respawnPosition =- Vector3.left;
             playerText.text = (int.Parse(playerText.text) + 1).ToString();
-            scoredText.text = "Player scored!";
+            scoredText.text = "You scored!";
         }
         
         shouldRespawn = true;
@@ -149,7 +150,7 @@ public class BallScript : MonoBehaviour
             notification.GetComponent<RectTransform>().localScale = new Vector3(1.4f, 1.4f, 1.4f);
 
             notify = false;
-            scoredText.text = "Player Won!";
+            scoredText.text = "You Won!";
             notifyWin = true;
             shouldRespawn = false;
         }
