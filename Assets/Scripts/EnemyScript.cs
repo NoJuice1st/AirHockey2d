@@ -17,6 +17,7 @@ public class EnemyScript : MonoBehaviour
     private Vector3 defencePointOffset;
 
     public float moveCooldown;
+    public float leftCooldown;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +31,8 @@ public class EnemyScript : MonoBehaviour
     void Update()
     {
         moveCooldown -= Time.deltaTime;
+        leftCooldown -= Time.deltaTime;
+        
         if (moveCooldown <= 0)
         {
             defencePointOffset = new Vector3(Random.Range(-1f,1f), Random.Range(-1f,1f));
@@ -41,15 +44,18 @@ public class EnemyScript : MonoBehaviour
         {   // attack
             dir = Vector3.Cross(transform.forward, (transform.position - puck.transform.position).normalized).y;
 
-            if (dir > 0) // if puck on the left
+            if (dir > 0.1f) // if puck on the left
             {
                 targetPos = puck.transform.position + (defencePointOffset / 5f);
-                
+                leftCooldown = 0.25f;
+            }
+            else if (leftCooldown < 0)
+            {
+                targetPos = puck.transform.position + new Vector3(1, -1 + Random.Range(-1f,1f) / 5f, 0);
             }
             else
             {
-                targetPos = puck.transform.position + new Vector3(0, -1 + Random.Range(-1f,1f) / 5f, 0);
-                
+                targetPos = puck.transform.position + (defencePointOffset / 5f);
             }
             speed = attackSpeed;
         }

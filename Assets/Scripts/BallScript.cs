@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -35,7 +36,10 @@ public class BallScript : MonoBehaviour
         notification = GameObject.Find("WhoScoredText");
         notificationOrigin = notification.transform.position;
         hit = GetComponent<AudioSource>();
+        
+        
     }
+    
     void Update() {
         float distanceToCenter = Vector3.Distance(Vector3.zero, transform.position);
 
@@ -96,10 +100,12 @@ public class BallScript : MonoBehaviour
             {
                 notifyWin = false;
                 notifyTimer = 0;
-                SceneManager.LoadScene("Menu");
+                LevelManager.Instance.LoadGame("Menu");
             }
         }
     }
+    
+    
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -163,5 +169,8 @@ public class BallScript : MonoBehaviour
             notifyWin = true;
             shouldRespawn = false;
         }
+        
+        //CameraShake
+        Camera.main.DOShakePosition(1f, 0.25f);
     }
 }
