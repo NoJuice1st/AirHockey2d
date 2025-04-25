@@ -1,7 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 
 public class BallScript : MonoBehaviour
@@ -120,10 +119,12 @@ public class BallScript : MonoBehaviour
         }
         else if (collision.gameObject.name.Contains("Wall"))
         {
+            hitWallSound.pitch = Random.Range(0.7f, 1.2f);
             hitWallSound.Play();
         }
         else
         {
+            hit.pitch = Random.Range(0.7f, 1.2f);
             hit.Play();
         }
     }

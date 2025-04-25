@@ -12091,7 +12091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe3d45868c369a4f88b4426c5eb0ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 20
 --- !u!50 &992989186
 Rigidbody2D:
   serializedVersion: 4
@@ -12985,9 +12985,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c5d10a6f13770d4998ee4e45587bd61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defenceSpeed: 5
-  attackSpeed: 10
+  defenceSpeed: 10
+  attackSpeed: 20
   moveCooldown: 0
+  leftCooldown: 0
 --- !u!1 &1633064440
 GameObject:
   m_ObjectHideFlags: 0
